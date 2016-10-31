@@ -1,4 +1,4 @@
 module Grouch
-  class Restriction < Item
+  class Restriction < Entity
   end
 end

@@ -1,4 +1,4 @@
 module Grouch
-  class Requisite < Item
+  class Requisite < Entity
   end
 end
