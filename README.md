@@ -1,4 +1,4 @@
-# Grouch-Ruby
+# Grouch-Ruby [![Code Climate](https://codeclimate.com/github/deanpapastrat/grouch-ruby/badges/gpa.svg)](https://codeclimate.com/github/deanpapastrat/grouch-ruby) [![Test Coverage](https://codeclimate.com/github/deanpapastrat/grouch-ruby/badges/coverage.svg)](https://codeclimate.com/github/deanpapastrat/grouch-ruby/coverage)
 
 **Grouch is not in any way approved by or affiliated with Georgia Tech.**
 
