@@ -1,4 +1,5 @@
 language: ruby
+cache: bundler
 sudo: false
 after_script: bundle exec codeclimate-test-reporter
 rvm:
