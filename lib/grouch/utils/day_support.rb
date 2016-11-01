@@ -1,3 +1,5 @@
+require 'grouch/utils/enumerator_support'
+
 module Grouch
   # The day support module includes support for converting the day
   # abbreviations in OSCAR to more standardized date formats
@@ -5,6 +7,18 @@ module Grouch
   # @author Dean Papastrat
   # @since 0.1.0
   module DaySupport
+    include EnumeratorSupport
+
+    # A hash where the keys are valid grading basis letters and the values are
+    # descriptions of those letters.
+    VALID_LETTERS = {
+      'm' => 'monday',
+      't' => 'tuesday',
+      'w' => 'wednesday',
+      'r' => 'thursday',
+      'f' => 'friday'
+    }
+
     # Converts a letter representing the day to a full-length day name
     # 
     # Valid day letters are:
@@ -57,15 +71,37 @@ module Grouch
     # @raise [ ArgumentError ] when letters is not mappable
     # @return [ Array<String> ] an array of full-length day names
     def self.letters_to_days(letters)
-      if letters.class == String
-        enumerator = letters.each_char
-      elsif letters.class.instance_methods.includes?(:map)
-        enumerator = letters
-      else
-        raise ArgumentError, "'#{letters.class}' is not mappable."
-      end
+      return string_enumerator(letters).map { |letter| letter_to_day(letter) }
+    end
 
-      return enumerator.map { |letter| letter_to_day(letter) }
+    # Checks if a day letter is valid
+    # 
+    # @param [ String ] letter a basis letter
+    # 
+    # @example Response given a valid basis letter
+    #   DaySupport.valid_basis_letter?('m') #=> true
+    # 
+    # @example Response given an invalid basis letter
+    #   DaySupport.valid_basis_letter?('s') #=> false
+    # 
+    # @return [ Boolean ]
+    def self.valid_day_letter?(letter)
+      VALID_LETTERS.has_key?(letter)
+    end
+
+    # Checks if a string or array of day letters are valid
+    # 
+    # @param [ String, Array<String> ] letters string or array of day letters
+    # 
+    # @example Response given valid day letters
+    #   DaySupport.valid_basis_letters?('mwf') #=> true
+    # 
+    # @example Response given invalid day letters
+    #   DaySupport.valid_basis_letters?('su') #=> false
+    #
+    # @return [ Boolean ]
+    def self.valid_day_letters?(letters)
+      string_enumerator(letters).all? { |letter| valid_day_letter?(letter) }
     end
   end
 end
