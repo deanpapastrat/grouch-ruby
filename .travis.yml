@@ -3,7 +3,7 @@ sudo: false
 after_script: bundle exec codeclimate-test-reporter
 rvm:
   - 2.3.0
-  - jruby-19mode
+  - jruby-head
 before_install: gem install bundler -v 1.10.6
 addons:
     code_climate:
