@@ -5,3 +5,6 @@ rvm:
   - 2.3.0
   - jruby-19mode
 before_install: gem install bundler -v 1.10.6
+addons:
+    code_climate:
+        repo_token: 35a6a44416b21050fbabd2c1b9d77f5f8b95d511fb3f244ca9317673f31bfa07
