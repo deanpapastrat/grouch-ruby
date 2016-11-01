@@ -7,7 +7,7 @@ module Grouch
   # @author Dean Papastrat
   # @since 0.1.0
   class Meeting < Entity
-    include DaySupport
+    include Grouch::Utils::DaySupport
 
     # Returns the person leading the meeting
     #

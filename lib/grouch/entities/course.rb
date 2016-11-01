@@ -6,7 +6,7 @@ module Grouch
   # @author Dean Papastrat <dean.g.papastrat@gmail.com>
   # @since 0.1.0
   class Course < Entity
-    include GradingSupport
+    include Grouch::Utils::GradingSupport
 
     # Create a new course object with the given properties
     # 
