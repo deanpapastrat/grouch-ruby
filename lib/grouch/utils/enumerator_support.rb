@@ -37,9 +37,9 @@ module Grouch
     def self.string_enumerator(enumerable)
       return [] if enumerable.nil?
       if enumerable.class == String
-        enumerator = enumerable.each_char
+        enumerable.each_char
       elsif enumerable.class.instance_methods.includes?(:map)
-        enumerator = enumerable
+        enumerable
       else
         raise ArgumentError, "'#{enumerable.class}' is not mappable."
       end

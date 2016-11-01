@@ -38,10 +38,8 @@ module Grouch
     #     [ "m", "t", "w", "r", "f" ]
     # @return [ String ] a full-length day name, lowercased
     def self.letter_to_day(letter)
-      lowercase_letter = letter.to_s.downcase
-
-      unless valid_day_letter?(letter)
-        raise ArgumentError, "'#{letter}'' is not a valid one-digit string."
+      unless valid_day_letter?(letter.to_s.downcase)
+        raise ArgumentError, "'#{letter}'' is not a valid day identifier."
       end
 
       return VALID_LETTERS[lowercase_letter]

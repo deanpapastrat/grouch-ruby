@@ -162,11 +162,8 @@ module Grouch
     # 
     # @return [ String ]
     def full_name
-      string = ""
-      string += @school if @school
-      string += @number if @number
-      string += "-" if string != "" && @name
-      string += @name if @name
+      string = [@school, @number].join(" ")
+      string += " - #{@name}" if string != "" && @name
       string = nil if string == ""
 
       return string

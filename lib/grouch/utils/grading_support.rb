@@ -34,10 +34,8 @@ module Grouch
     #     [ "a", "l", "p" ]
     # @return [ String ] a human-readable basis, lowercased
     def self.letter_to_basis(letter)
-      lowercase_letter = letter.to_s.downcase
-
-      unless valid_basis_letter?(letter)
-        raise ArgumentError, "'#{letter}'' is not a valid one-digit string."
+      unless valid_basis_letter?(letter.to_s.downcase)
+        raise ArgumentError, "'#{letter}'' is not a valid grading basis."
       end
 
       return VALID_LETTERS[lowercase_letter]
