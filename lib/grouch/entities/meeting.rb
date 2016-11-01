@@ -12,7 +12,7 @@ module Grouch
     # Returns the person leading the meeting
     #
     # @example
-    #   meeting.instructor #=> "Monica Sweat"
+    #   meeting.instructor #=> 'Monica Sweat'
     #
     # @return [ String ] a string with the person's name
     attr_reader :instructor
@@ -20,7 +20,7 @@ module Grouch
     # Returns the where the meeting will occur
     #
     # @example
-    #   meeting.location #=> "Clough Undergraduate Commons 102"
+    #   meeting.location #=> 'Clough Undergraduate Commons 102'
     #
     # @return [ String ] a string representing the location
     attr_reader :location
@@ -28,7 +28,7 @@ module Grouch
     # Returns the where the meeting will occur
     #
     # @example
-    #   meeting.type #=> "lecture"
+    #   meeting.type #=> 'lecture'
     #
     # @return [ String ] a string representing the meeting type
     attr_reader :type
@@ -36,7 +36,7 @@ module Grouch
     # Returns the days that the meeting will occur
     #
     # @example
-    #   meeting.days #=> ["monday", "wednesday", "friday"]
+    #   meeting.days #=> ['monday', 'wednesday', 'friday']
     #
     # @return [ Array<String> ] array of day names
     attr_reader :days
@@ -44,7 +44,7 @@ module Grouch
     # Returns the time the meeting will end
     # 
     # @example
-    #   meeting.end_time #=> "8:55am"
+    #   meeting.end_time #=> '8:55am'
     #
     # @return [ String ] a string representation of the end time
     attr_reader :end_time
@@ -52,7 +52,7 @@ module Grouch
     # Returns the time the meeting will begin
     # 
     # @example
-    #   meeting.start_time #=> "8:05am"
+    #   meeting.start_time #=> '8:05am'
     #
     # @return [ String ] a string representation of the start time
     attr_reader :start_time

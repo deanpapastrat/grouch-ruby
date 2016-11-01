@@ -18,7 +18,7 @@ module Grouch
     # across all sections in a particular semester for a course
     #
     # @example
-    #   course.identifier #=> "K1"
+    #   course.identifier #=> 'K1'
     #
     # @return [ String ] a string representing the section identifier
     attr_reader :identifier
@@ -26,7 +26,7 @@ module Grouch
     # Returns the names of the instructors leading the section
     #
     # @example
-    #   course.instructors #=> ["Monica Sweat"]
+    #   course.instructors #=> ['Monica Sweat']
     #
     # @return [ Array<String> ] an array of instructor names
     attr_reader :instructors
@@ -39,7 +39,7 @@ module Grouch
     # Returns the places where the section will meet
     #
     # @example
-    #   section.locations #=> ["Clough Undergraduate Commons 102", "Instructional Center 204"]
+    #   section.locations #=> ['Clough Undergraduate Commons 102', 'Instructional Center 204']
     # 
     # @return [ Array<String> ] an array of the locations as strings
     def locations
@@ -48,7 +48,7 @@ module Grouch
     # Returns the days the section will meet
     # 
     # @example
-    #   section.meeting_days #=> ["monday", "wednesday", "friday"]
+    #   section.meeting_days #=> ['monday', 'wednesday', 'friday']
     # 
     # @return [ Set<String> ] days of the week
     def meeting_days

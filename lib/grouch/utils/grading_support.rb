@@ -8,7 +8,7 @@ module Grouch
     # @author Dean Papastrat
     # @since 0.1.0
     module GradingSupport
-      extend Grouch::Utils::EnumeratorSupport
+      include Grouch::Utils::EnumeratorSupport
 
       # A hash where the keys are valid grading basis letters and the values are
       # descriptions of those letters.
@@ -32,9 +32,9 @@ module Grouch
       #
       # @raise [ ArgumentError ] when letter is not a string with a value of
       #   one of the following:
-      #     [ "a", "l", "p" ]
+      #     [ 'a', 'l', 'p' ]
       # @return [ String ] a human-readable basis, lowercased
-      def self.letter_to_basis(letter)
+      def letter_to_basis(letter)
         lowercase_letter = letter.to_s.downcase
         unless valid_basis_letter?(lowercase_letter)
           raise ArgumentError, "'#{letter}' is not a valid grading basis."
@@ -56,9 +56,8 @@ module Grouch
       #   ]
       #
       # @return [ Array<String> ] an array of human-readable grading bases
-      def self.letters_to_bases(letters)
-        return string_enumerator(letters)
-          .map { |letter| letter_to_basis(letter) }
+      def letters_to_bases(letters)
+        string_enumerator(letters).map { |letter| letter_to_basis(letter) }
       end
 
       # Checks if a basis letter is valid
@@ -72,7 +71,7 @@ module Grouch
       #   GradingSupport.valid_basis_letter?('b') #=> false
       # 
       # @return [ Boolean ]
-      def self.valid_basis_letter?(letter)
+      def valid_basis_letter?(letter)
         VALID_LETTERS.has_key?(letter.to_s.downcase)
       end
 
@@ -87,7 +86,7 @@ module Grouch
       #   GradingSupport.valid_basis_letters?('cd') #=> false
       #
       # @return [ Boolean ]
-      def self.valid_basis_letters?(letters)
+      def valid_basis_letters?(letters)
         enumerator = string_enumerator(letters)
         enumerator.count > 0 &&
           enumerator.all? { |letter| valid_basis_letter?(letter) }

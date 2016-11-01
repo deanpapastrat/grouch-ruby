@@ -24,34 +24,34 @@ module Grouch
     #
     # @return [ Course ] the newly created course
     def initialize(school, number, name, semester, year, hours, sections,
-        grade_basis: nil, restrictions: nil, prerequisites: nil, 
-        corequisites: nil)
+      grade_basis: nil, restrictions: nil, prerequisites: nil, 
+      corequisites: nil)
 
-        # Coerce data into our formats
-        hours = hours.to_i
-        grade_basis = grade_basis.downcase if grade_basis
-        number = number.to_i
-        school = school.downcase
-        semester = semester.downcase
-        year = year.to_i
+      # Coerce data into our formats
+      hours = hours.to_i
+      grade_basis = grade_basis.downcase if grade_basis
+      number = number.to_i
+      school = school.downcase
+      semester = semester.downcase
+      year = year.to_i
 
-        # Check
+      # TODO: Validate attributes
 
-        # Set mandatory attributes
-        @school, @number, @name = school, number, name
-        @semester, @year, @hours = semester, year, hours
-        @sections = sections
+      # Set mandatory attributes
+      @school, @number, @name = school, number, name
+      @semester, @year, @hours = semester, year, hours
+      @sections = sections
 
-        # Set optional attributes
-        @grade_basis, @restrictions = grade_basis, restrictions
-        @prerequisites, @corequisites = prerequisites, corequisites
-        return self
+      # Set optional attributes
+      @grade_basis, @restrictions = grade_basis, restrictions
+      @prerequisites, @corequisites = prerequisites, corequisites
+      return self
     end
 
     # Returns the name of the course
     #
     # @example
-    #   course.name #=> "Data Structures and Algorithms"
+    #   course.name #=> 'Data Structures and Algorithms'
     #
     # @return [ String ]
     attr_reader :name
@@ -67,7 +67,7 @@ module Grouch
     # Returns the school that the course is in
     #
     # @example
-    #   course.school #=> "cs"
+    #   course.school #=> 'cs'
     # 
     # @return [ String ]
     attr_reader :school
@@ -75,12 +75,12 @@ module Grouch
     # Returns the basis on which the course can be graded, generally
     # in ALP format
     # 
-    # - "a" stands for audit
-    # - "l" stands for letter grade
-    # - "p" stands for pass/fail
+    # - 'a' stands for audit
+    # - 'l' stands for letter grade
+    # - 'p' stands for pass/fail
     #
     # @example
-    #   course.grade_basis #=> "a"
+    #   course.grade_basis #=> 'a'
     #
     # @return [ Array<String> ]
     attr_reader :grade_basis
@@ -101,7 +101,7 @@ module Grouch
     # - fall
     # 
     # @example
-    #   course.semester #=> "fall"
+    #   course.semester #=> 'fall'
     #
     # @return [ String ]
     attr_reader :semester
@@ -136,33 +136,12 @@ module Grouch
 
     # Returns the full name of the course, in more of a display-name format
     # 
-    # @example Standard Response
-    #   course.full_name #=> "CS 1332 - Data Structures and Algorithms"
-    #
-    # @example If only school and number are present
-    #   course.full_name #=> "CS 1332"
-    #
-    # @example If only school and name are present
-    #   course.full_name #=> "CS - Data Structures and Algorithms"
-    #
-    # @example If only number and name are present
-    #   course.full_name #=> "1332 - Data Structures and Algorithms"
-    #
-    # @example If only school is present
-    #   course.full_name #=> "CS"
-    #
-    # @example If only number is present
-    #   course.full_name #=> "1332"
-    #
-    # @example If name is present
-    #   course.full_name #=> "Data Structures and Algorithms"
-    #
-    # @example If name, number, and school are nil
-    #   course.full_name #=> nil
+    # @example
+    #   course.full_name #=> 'CS 1332 - Data Structures and Algorithms'
     # 
     # @return [ String ]
     def full_name
-      string = [@school, @number].join(" ")
+      string = [@school.upcase, @number].join(" ")
       string += " - #{@name}" if string != "" && @name
       string = nil if string == ""
 
@@ -177,16 +156,16 @@ module Grouch
     # - pass/fail
     #
     # @example Single grading basis
-    #   course.grading_basis #=> "a"
-    #   course.grading_formats #=> ["audit"]
+    #   course.grade_basis #=> 'a'
+    #   course.grading_formats #=> ['audit']
     # 
     # @example Multiple grading bases
-    #   course.grading_basis #=> "lp"
-    #   course.grading_formats #=> ["letter grade", "pass/fail"]
+    #   course.grade_basis #=> 'lp'
+    #   course.grading_formats #=> ['letter grade', 'pass/fail']
     #
     # @return [ Array<String> ] an array of human-readable grading bases
     def grading_formats
-      return letters_to_bases(@grading_basis)
+      letters_to_bases(@grade_basis)
     end
   end
 end

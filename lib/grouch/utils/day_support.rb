@@ -8,7 +8,7 @@ module Grouch
     # @author Dean Papastrat
     # @since 0.1.0
     module DaySupport
-      extend Grouch::Utils::EnumeratorSupport
+      include Grouch::Utils::EnumeratorSupport
 
       # A hash where the keys are valid grading basis letters and the values are
       # descriptions of those letters.
@@ -36,9 +36,9 @@ module Grouch
       #
       # @raise [ ArgumentError ] when letter is not a string with a value of
       #   one of the following:
-      #     [ "m", "t", "w", "r", "f" ]
+      #     [ 'm', 't', 'w', 'r', 'f' ]
       # @return [ String ] a full-length day name, lowercased
-      def self.letter_to_day(letter)
+      def letter_to_day(letter)
         lowercase_letter = letter.to_s.downcase
         unless valid_day_letter?(lowercase_letter)
           raise ArgumentError, "'#{letter}' is not a valid day identifier."
@@ -62,7 +62,7 @@ module Grouch
       # 
       # @raise [ ArgumentError ] when letters is not mappable
       # @return [ Array<String> ] an array of full-length day names
-      def self.letters_to_days(letters)
+      def letters_to_days(letters)
         return string_enumerator(letters).map { |letter| letter_to_day(letter) }
       end
 
@@ -77,7 +77,7 @@ module Grouch
       #   DaySupport.valid_basis_letter?('s') #=> false
       # 
       # @return [ Boolean ]
-      def self.valid_day_letter?(letter)
+      def valid_day_letter?(letter)
         VALID_LETTERS.has_key?(letter.to_s.downcase)
       end
 
@@ -92,7 +92,7 @@ module Grouch
       #   DaySupport.valid_basis_letters?('su') #=> false
       #
       # @return [ Boolean ]
-      def self.valid_day_letters?(letters)
+      def valid_day_letters?(letters)
         enumerator = string_enumerator(letters)
         enumerator.count > 0 &&
           enumerator.all? { |letter| valid_day_letter?(letter) }
