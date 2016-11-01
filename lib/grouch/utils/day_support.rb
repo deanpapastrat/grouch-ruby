@@ -39,20 +39,12 @@ module Grouch
     # @return [ String ] a full-length day name, lowercased
     def self.letter_to_day(letter)
       lowercase_letter = letter.to_s.downcase
-      case lowercase_letter
-      when 'm'
-        return 'monday'
-      when 't'
-        return 'tuesday'
-      when 'w'
-        return 'wednesday'
-      when 'r'
-        return 'thursday'
-      when 'f'
-        return 'friday'
-      else
+
+      unless valid_day_letter?(letter)
         raise ArgumentError, "'#{letter}'' is not a valid one-digit string."
       end
+
+      return VALID_LETTERS[lowercase_letter]
     end
 
     # Converts multiple letters to full-length day names
