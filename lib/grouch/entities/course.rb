@@ -1,9 +1,53 @@
+require 'grouch/utils/grading_support'
+
 module Grouch
   # The course entity represents a college course scraped from OSCAR.
   # 
   # @author Dean Papastrat <dean.g.papastrat@gmail.com>
   # @since 0.1.0
   class Course < Entity
+    include GradingSupport
+
+    # Create a new course object with the given properties
+    # 
+    # @param [ String ] school the school the course is in
+    # @param [ Integer ] number the course number
+    # @param [ String ] name the name of the course
+    # @param [ String ] semester the semester the course is meeting
+    # @param [ Integer ] year the year the course is meeting
+    # @param [ Integer ] hours how many hours of credit the course is worth
+    # @param [ Array<Section> ] sections groupings of meetings for a course
+    # @param [ String ] grade_basis how the course can be graded
+    # @param [ Array<Restriction> ] restrictions course restrictions
+    # @param [ Array<Requisite> ] prerequisites required prior courses
+    # @param [ Array<Requisite> ] corequisites required simultaneous courses
+    #
+    # @return [ Course ] the newly created course
+    def initialize(school, number, name, semester, year, hours, sections,
+        grade_basis: nil, restrictions: nil, prerequisites: nil, 
+        corequisites: nil)
+
+        # Coerce data into our formats
+        hours = hours.to_i
+        grade_basis = grade_basis.downcase if grade_basis
+        number = number.to_i
+        school = school.downcase
+        semester = semester.downcase
+        year = year.to_i
+
+        # Check
+
+        # Set mandatory attributes
+        @school, @number, @name = school, number, name
+        @semester, @year, @hours = semester, year, hours
+        @sections = sections
+
+        # Set optional attributes
+        @grade_basis, @restrictions = grade_basis, restrictions
+        @prerequisites, @corequisites = prerequisites, corequisites
+        return self
+    end
+
     # Returns the name of the course
     #
     # @example
@@ -118,6 +162,14 @@ module Grouch
     # 
     # @return [ String ]
     def full_name
+      string = ""
+      string += @school if @school
+      string += @number if @number
+      string += "-" if string != "" && @name
+      string += @name if @name
+      string = nil if string == ""
+
+      return string
     end
 
     # Returns the grading bases in a human-readable format
@@ -137,6 +189,7 @@ module Grouch
     #
     # @return [ Array<String> ] an array of human-readable grading bases
     def grading_formats
+      return letters_to_bases(@grading_basis)
     end
   end
 end
