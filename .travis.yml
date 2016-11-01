@@ -1,6 +1,6 @@
 language: ruby
-script: "bundle exec rake"
 sudo: false
+after_script: bundle exec codeclimate-test-reporter
 rvm:
   - 2.3.0
   - jruby-19mode
