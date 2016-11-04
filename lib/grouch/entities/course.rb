@@ -3,7 +3,7 @@ require 'grouch/utils/grading_support'
 module Grouch
   # The course entity represents a college course scraped from OSCAR.
   # 
-  # @author Dean Papastrat <dean.g.papastrat@gmail.com>
+  # @author Dean Papastrat
   # @since 0.1.0
   class Course < Entity
     include Grouch::Utils::GradingSupport

@@ -9,6 +9,18 @@ module Grouch
   class Meeting < Entity
     include Grouch::Utils::DaySupport
 
+    def initialize(instructor, days, start_time, end_time, type, location)
+      meetings = meetings.to_a
+
+      args = [crn, identifier, instructors, meetings]
+      raise ArgumentError, 'All fields must be present.' if args.include?(nil)
+
+      @crn, @identifier = crn, identifier
+      @instructors, @meetings = instructors, meetings
+
+      return self
+    end
+
     # Returns the person leading the meeting
     #
     # @example

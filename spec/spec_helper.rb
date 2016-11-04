@@ -1,5 +1,6 @@
 require 'simplecov'
 SimpleCov.start do
+  add_filter "/spec/"
   add_group "Entities", "lib/grouch/entities"
   add_group "Utils", "lib/grouch/utils"
 end

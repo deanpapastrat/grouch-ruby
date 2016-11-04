@@ -9,7 +9,7 @@ module Grouch
       # 
       # @example Standard response given a string
       #   letters = ['cat']
-      #   letters_enumerator = EnumeratorSupport.string_enumerator(letters)
+        # letters_enumerator = EnumeratorSupport.string_enumerator(letters)
       #   letters_enumator.map(&:uppercase) #=> ['C', 'A', 'T']
       # 
       # @example Standard response given an array
