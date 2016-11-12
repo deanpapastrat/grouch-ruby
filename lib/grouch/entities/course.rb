@@ -129,10 +129,10 @@ module Grouch
     # @return [ Array<Restriction> ]
     attr_reader :restrictions
 
-    # Returns sections for the course
+    # Returns or sets sections for the course
     # 
     # @return [ Array<Section> ]
-    attr_reader :sections
+    attr_accessor :sections
 
     # Returns the full name of the course, in more of a display-name format
     # 

@@ -70,6 +70,38 @@ module Grouch
     # @return [ Array<Meeting> ] an array of meetings
     attr_reader :meetings
 
+    # Returns the number of seats available
+    # 
+    # @example
+    #   meeting.seats_limit_count #=> 30
+    #
+    # @return [ Integer ] an integer representing the count
+    attr_reader :seats_limit_count
+
+    # Returns the number of taken seats
+    # 
+    # @example
+    #   meeting.seats_taken_count #=> 0
+    #
+    # @return [ Integer ] an integer representing the count
+    attr_reader :seats_taken_count
+
+    # Returns the number of waitlist spots available
+    # 
+    # @example
+    #   meeting.waitlist_limit_count #=> 15
+    #
+    # @return [ Integer ] an integer representing the count
+    attr_reader :waitlist_limit_count
+
+    # Returns the number of taken waitlist spots
+    # 
+    # @example
+    #   meeting.waitlist_taken_count #=> 0
+    #
+    # @return [ Integer ] an integer representing the count
+    attr_reader :seats_taken_count
+
     # Returns the places where the section will meet
     #
     # @example
@@ -80,9 +112,7 @@ module Grouch
     # 
     # @return [ Array<String> ] an array of the locations as strings
     def meeting_locations
-      return @cached_meeting_locations if @cached_meeting_locations
-
-      @meetings.map(&:location)
+      @_meeting_locations ||= @meetings.map(&:location)
     end
 
     # Returns the days the section will meet
@@ -92,13 +122,12 @@ module Grouch
     # 
     # @return [ Set<String> ] days of the week
     def meeting_days
-      return @cached_meeting_days if @cached_meeting_days
-
-      @cached_meeting_days = @meetings.each_with_object(Set.new) do |meeting, set|
-        string_enumerator(meeting.days).each do |day|
-          set << letter_to_day(day)
+      @_meeting_days ||=
+        @meetings.each_with_object(Set.new) do |meeting, set|
+          string_enumerator(meeting.days).each do |day|
+            set << letter_to_day(day)
+          end
         end
-      end
     end
 
     # Returns the times the section will meet during the week
@@ -140,16 +169,8 @@ module Grouch
     #       }
     #     ]
     def meeting_times
-      return @cached_meeting_times if @cached_meeting_times
-      @cached_meeting_times = @meetings.reduce([]) do |memo, meeting|
-        days = string_enumerator(meeting.days).map do |day|
-          {
-            day: letter_to_day(day),
-            end_time: meeting.end_time,
-            start_time: meeting.start_time,
-          }
-        end
-        memo += days
+      @_meeting_times ||= @meetings.reduce([]) do |memo, meeting|
+        memo += meeting.times
       end
     end
 
@@ -160,11 +181,50 @@ module Grouch
     # 
     # @return [ Set<String> ] a set of meeting types
     def meeting_types
-      return @cached_meeting_types if @cached_meeting_types
-      @cached_meeting_types =
+      @_meeting_types ||=
         @meetings.each_with_object(Set.new) do |meeting, set|
           set << meeting.type
         end
+    end
+
+    # Sets the number of seats available for the section.
+    # 
+    # @note Only use this for setting or updating counts via the scraper!
+    #   This method is ONLY meant to be publicly used for projects that
+    #   need to tap directly into Grouch's data structures for rapid section
+    #   availability refreshing.
+    # 
+    # @param [ Integer ] seats_limit how many total seats are available
+    # @param [ Integer ] seats_taken how many seats are already registered for
+    # @param [ Integer ] waitlist_limit how many total waitlist spots there are
+    # @param [ Integer ] waitlist_taken how many waitlist spots are filled
+    # 
+    # @return [ Void ]
+    def set_counts(seats_limit: , seats_taken:, waitlist_limit: nil,
+      waitlist_taken: nil)
+
+      unless seats_limit.kind_of?(Integer)
+        raise ArgumentError, 'seats_limit must be an integer.'
+      end
+
+      unless seats_taken.kind_of?(Integer)
+        raise ArgumentError, 'seats_taken must be an integer.'
+      end
+
+      @seats_limit_count = seats_limit.to_i
+      @seats_taken_count = seats_taken.to_i
+
+      unless waitlist_limit.nil? || waitlist_limit.kind_of?(Integer)
+        raise ArgumentError, 'waitlist_limit must be nil or an integer.'
+      end
+
+      unless waitlist_taken.nil? || waitlist_taken.kind_of?(Integer)
+        raise ArgumentError, 'waitlist_taken must be nil or an integer.'
+      end
+
+      @waitlist_limit_count = waitlist_limit unless waitlist_limit.nil?
+      @waitlist_taken_count = waitlist_taken unless waitlist_taken.nil?
+      return nil
     end
   end
 end

@@ -88,6 +88,30 @@ RSpec.describe Grouch::Section do
 
       it 'returns the locations where the section meets' do
         accept_meeting_types
+        allow(meeting_1).to(receive(:times).and_return([
+            {
+              day: 'monday',
+              end_time: '8:55am',
+              start_time: '8:05am'
+            },
+            {
+              day: 'wednesday',
+              end_time: '8:55am',
+              start_time: '8:05am'
+            },
+            {
+              day: 'friday',
+              end_time: '8:55am',
+              start_time: '8:05am'
+            }
+          ]))
+        allow(meeting_2).to(receive(:times).and_return([
+            {
+              day: 'wednesday',
+              end_time: '6:25pm',
+              start_time: '5:05pm'
+            }
+          ]))
         expect(subject.meeting_times).to(contain_exactly(
           {
             day: 'monday',
@@ -137,6 +161,123 @@ RSpec.describe Grouch::Section do
       it 'returns an empty array' do
         expect(subject.meeting_types).to be_instance_of(Set)
         expect(subject.meeting_types.length).to eq(0)
+      end
+    end
+  end
+
+  describe '#set_counts' do
+    let(:meetings) { [meeting_1, meeting_2] }
+
+    context 'when all parameters are present and valid' do
+      subject do
+        section = super()
+        section.set_counts(
+          seats_limit: 1,
+          seats_taken: 1,
+          waitlist_limit: 1,
+          waitlist_taken: 1
+        )
+        return section
+      end
+
+      it 'sets the seats_limit_count' do
+        accept_meeting_types
+        expect(subject.seats_limit_count).to eq(1)
+      end
+
+      it 'sets the seats_taken_count' do
+        accept_meeting_types
+        expect(subject.seats_limit_count).to eq(1)
+      end
+
+      it 'sets the waitlist_limit_count' do
+        accept_meeting_types
+        expect(subject.seats_limit_count).to eq(1)
+      end
+
+      it 'sets the waitlist_taken_count' do
+        accept_meeting_types
+        expect(subject.seats_limit_count).to eq(1)
+      end
+    end
+
+    context 'when non-waitlisting parameters are present and valid' do
+      subject do
+        section = super()
+        section.set_counts(seats_limit: 1, seats_taken: 1)
+        return section
+      end
+
+      it 'sets the seats_limit_count' do
+        accept_meeting_types
+        expect(subject.seats_limit_count).to eq(1)
+      end
+
+      it 'sets the seats_taken_count' do
+        accept_meeting_types
+        expect(subject.seats_limit_count).to eq(1)
+      end
+    end
+
+    context 'when non-integer seat_limit is passed' do
+      subject {super().set_counts(seats_limit: '1', seats_taken: 1)}
+
+      it 'raises an error' do
+        accept_meeting_types
+        expect{subject}.to raise_error(ArgumentError,
+          'seats_limit must be an integer.')
+      end
+    end
+
+    context 'when non-integer seats_taken is passed' do
+      subject {super().set_counts(seats_limit: 1, seats_taken: '1')}
+
+      it 'raises an error' do
+        accept_meeting_types
+        expect{subject}.to raise_error(ArgumentError,
+          'seats_taken must be an integer.')
+      end
+    end
+
+    context 'when non-integer waitlist_limit is passed' do
+      subject {super().set_counts(seats_limit: 1, seats_taken: 1,
+        waitlist_limit: '1', waitlist_taken: 0)}
+
+      it 'raises an error' do
+        accept_meeting_types
+        expect{subject}.to raise_error(ArgumentError,
+          'waitlist_limit must be nil or an integer.')
+      end
+    end
+
+    context 'when non-integer waitlist_taken is passed' do
+      subject {super().set_counts(seats_limit: 1, seats_taken: 1,
+        waitlist_limit: 1, waitlist_taken: '0')}
+
+      it 'raises an error' do
+        accept_meeting_types
+        expect{subject}.to raise_error(ArgumentError,
+          'waitlist_taken must be nil or an integer.')
+      end
+    end
+
+    context 'when seats_limit is nil' do
+      subject {super().set_counts(seats_limit: nil, seats_taken: 0)}
+
+      it 'raises an error' do
+        accept_meeting_types
+        expect{subject}.to raise_error(ArgumentError,
+          'seats_limit must be an integer.')
+      end
+    end
+
+    context 'when seats_taken is nil' do
+      subject {super().set_counts(seats_limit: 0, seats_taken: nil)}
+
+      it 'raises an error' do
+        accept_meeting_types
+        expect{subject}.to raise_error(ArgumentError,
+          'seats_taken must be an integer.')
       end
     end
   end
